@@ -1,4 +1,4 @@
-var app = angular.module('musiQuessApp', ['ngRoute']);
+var app = angular.module('musiQuessApp', ['ngRoute', 'btford.socket-io', 'facebook']);
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -8,63 +8,145 @@ app.config(function ($routeProvider) {
             controller: 'mainController'
         })
 
-});
+}).config(function(FacebookProvider) {
+    FacebookProvider.init('918570134876487');
+})
 
-app.controller('mainController', function ($scope) {
-    // create a message to display in our view
-    $scope.message = 'Everyone come and see how good I look!';
-});
-
-app.run(['$rootScope', '$window', 'srvAuth',
-    function($rootScope, $window, sAuth) {
-
-        $rootScope.user = {};
-
-        $window.fbAsyncInit = function() {
-
-            FB.init({
-                appId      : '918570134876487',
-                channelUrl : 'app/channel.html',
-                status     : true,
-                cookie     : true,
-                xfbml      : true,
-                version    : 'v2.4'
+app.factory('socket', function ($rootScope) {
+    var socket = io.connect();
+    return {
+        on: function (eventName, callback) {
+            socket.on(eventName, function () {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    callback.apply(socket, args);
+                });
             });
+        },
+        emit: function (eventName, data, callback) {
+            socket.emit(eventName, data, function () {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    if (callback) {
+                        callback.apply(socket, args);
+                    }
+                });
+            })
+        }
+    };
+});
 
-            sAuth();
+app.controller('mainController', function ($scope, socket, Facebook) {
+    // Define user empty data :/
+    $scope.user = {};
 
-        };
+    // Defining user logged status
+    $scope.logged = false;
 
-        (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+    // And some fancy flags to display messages upon user status change
+    $scope.byebye = false;
+    $scope.salutation = false;
 
-    }]);
+    /**
+     * Watch for Facebook to be ready.
+     * There's also the event that could be used
+     */
+    $scope.$watch(
+        function() {
+            return Facebook.isReady();
+        },
+        function(newVal) {
+            if (newVal)
+                $scope.facebookReady = true;
+        }
+    );
 
-app.factory('srvAuth', [function() {
-    return watchLoginChange = function() {
+    var userIsConnected = false;
 
-        var _self = this;
+    Facebook.getLoginStatus(function(response) {
+        if (response.status == 'connected') {
+            userIsConnected = true;
+            $scope.logged = true;
+            getUserData();
+        }
+    });
 
-        FB.Event.subscribe('auth.authResponseChange', function(res) {
+    /**
+     * IntentLogin
+     */
+    $scope.IntentLogin = function() {
+        if(!userIsConnected) {
+            $scope.login();
+        }
+    };
 
-            if (res.status === 'connected') {
-
-
-
-                 console.log(res.authResponse);
-            }
-            else {
-
-                console.log("foo");
-
+    /**
+     * Login
+     */
+    $scope.login = function() {
+        Facebook.login(function(response) {
+            if (response.status == 'connected') {
+                $scope.logged = true;
+                getUserData();
             }
 
         });
+    };
 
+    function getUserData() {
+        Facebook.api('/me', {fields: "id,name,picture"}, function(response) {
+            $scope.$apply(function() {
+                $scope.user = response;
+                Facebook.api('/me/picture?width=200&height=200', function(response){
+                    $scope.user["image"] = response.data["url"];
+                    emitUser();
+                });
+            });
+        });
+
+    };
+
+    /**
+     * Logout
+     */
+    $scope.logout = function() {
+        Facebook.logout(function() {
+            $scope.$apply(function() {
+                $scope.user   = {};
+                $scope.logged = false;
+            });
+        });
     }
-}]);
+
+    /**
+     * Taking approach of Events :D
+     */
+    $scope.$on('Facebook:statusChange', function(ev, data) {
+        console.log('Status: ', data);
+        if (data.status == 'connected') {
+            $scope.$apply(function() {
+                $scope.salutation = true;
+                $scope.byebye     = false;
+            });
+        } else {
+            $scope.$apply(function() {
+                $scope.salutation = false;
+                $scope.byebye     = true;
+
+                // Dismiss byebye message after two seconds
+                $timeout(function() {
+                    $scope.byebye = false;
+                }, 2000)
+            });
+        }
+
+
+    });
+
+    function emitUser(){
+        socket.emit("connectUser", $scope.user);
+    }
+
+    $scope.message = 'Everyone come and see how good I look!';
+});
+
