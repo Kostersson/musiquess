@@ -147,5 +147,12 @@ app.controller('mainController', function ($scope, socket, Facebook) {
     function emitUser(){
         socket.emit("connectUser", $scope.user);
     }
+
+    $scope.addPoints = function(){
+        console.log("points!");
+        socket.emit('addPoints', 3);
+    }
+
+
 });
 

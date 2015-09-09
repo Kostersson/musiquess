@@ -1,7 +1,8 @@
 class User
   constructor: (@id, @name, @image, @points) ->
 
-  talk: ->
-    console.log "My name is #{@name}"
+
+  addPoints: (pointsToAdd) ->
+    @points += pointsToAdd
 
 module.exports = User

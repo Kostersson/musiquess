@@ -5,11 +5,11 @@ module.exports = (io) ->
   io.on('connection', (socket) ->
 
     socket.on('connectUser', (result) ->
-      console.log(socket.id)
-      u = new User result.id, result.name, result.image, 0
-
-      users[socket.id] = u
-      sendUsers()
+      if users[socket.id] is undefined
+        console.log(socket.id)
+        u = new User result.id, result.name, result.image, 0
+        users[socket.id] = u
+        sendUsers()
     )
     socket.on('removeUser', ->
       delete users[socket.id]
@@ -29,6 +29,10 @@ module.exports = (io) ->
       console.log("-------------")
     )
     socket.on('getUsers', ->
+      sendUsers()
+    )
+    socket.on('addPoints', (points) ->
+      users[socket.id].addPoints(points)
       sendUsers()
     )
   )
