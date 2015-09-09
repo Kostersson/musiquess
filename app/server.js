@@ -35,8 +35,12 @@ app.factory('socket', function ($rootScope) {
 });
 
 app.controller('mainController', function ($scope, socket) {
-    $scope.users = [];
-    socket.on('addUser', function (user) {
-        $scope.users.push(user)
+    $scope.users = {};
+
+    socket.emit('getUsers');
+
+    socket.on('users', function (users) {
+        console.log($scope.users);
+        $scope.users = users;
     });
 });

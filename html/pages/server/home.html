@@ -1,4 +1,4 @@
-<div ng-repeat="user in users">
+<div ng-repeat="(id, user) in users">
     {{ user.name }} <br>
     <img src="{{ user.image }}" />
 </div>

@@ -114,6 +114,7 @@ app.controller('mainController', function ($scope, socket, Facebook) {
             $scope.$apply(function() {
                 $scope.user   = {};
                 $scope.logged = false;
+                socket.emit('removeUser');
             });
         });
     }
@@ -146,7 +147,5 @@ app.controller('mainController', function ($scope, socket, Facebook) {
     function emitUser(){
         socket.emit("connectUser", $scope.user);
     }
-
-    $scope.message = 'Everyone come and see how good I look!';
 });
 
