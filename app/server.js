@@ -1,4 +1,4 @@
-var app = angular.module('musiQuessApp', ['ngRoute', 'btford.socket-io']);
+var app = angular.module('musiQuessApp', ['ngRoute', 'ngAudio']);
 
 app.config(function ($routeProvider) {
     $routeProvider

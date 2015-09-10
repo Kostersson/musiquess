@@ -11,6 +11,7 @@ module.exports = (io) ->
   validFileExtensions = [".mp3", ".wma"]
   amountOfChoices = 4
   rightChoise = 0
+  running = false
   walk = (dir, done) ->
     results = []
     fs.readdir(dir, (err, list) ->
@@ -52,7 +53,6 @@ module.exports = (io) ->
 
   createRandoms = ->
     randoms = []
-
     randoms.push(Math.floor(Math.random() * songs.length)) for [1..amountOfChoices]
     console.log('randoms: ' + randoms)
     rightChoise = Math.floor(Math.random() * amountOfChoices)
@@ -62,8 +62,8 @@ module.exports = (io) ->
 
 
   getSongsData = ->
+    selectedSongs = []
     parser(songs[index]) for index in randoms
-
     async.parallel(calls, (err, result) ->
       if err
         console.log(err)
@@ -73,11 +73,11 @@ module.exports = (io) ->
 
 
   parser = (filename) ->
-    selectedSongs = []
     calls.push((callback) ->
       mm(fs.createReadStream(filename), (err, metadata) ->
         if (err)
-          throw err
+          console.log(err)
+          createRandoms()
         selectedSongs.push({
           title: metadata.title,
           artist: metadata.artist,
@@ -89,15 +89,20 @@ module.exports = (io) ->
     )
 
   sendSongs = ->
+    calls = []
     selectedSongs.forEach( (song) ->
       song.filename = song.filename.substring(song.filename.indexOf("/music") + 1)
     )
-    console.log(selectedSongs)
+    running = false
     io.emit('songs', selectedSongs)
 
   io.on('connection', (socket) ->
     socket.on('newSongs', ->
-      createRandoms()
+      if not running
+        running = true
+        createRandoms()
+      else
+        console.log("cancelled")
     )
   )
 
