@@ -1,4 +1,5 @@
-User = require './user'
+mongoose = require 'mongoose'
+User = require './../models/user-model'
 
 module.exports = (io) ->
   users = {}
@@ -7,8 +8,28 @@ module.exports = (io) ->
     socket.on('connectUser', (result) ->
       if users[socket.id] is undefined
         console.log(socket.id)
-        u = new User result.id, result.name, result.image, 0
-        users[socket.id] = u
+
+        User.findOne({id: result.id}, (err, user) ->
+          console.log("user: " + user)
+          setUser(user)
+        )
+
+      setUser = (user) ->
+        newUser = {}
+        if user is null
+          newUser = new User ({
+              id: result.id,
+              name: result.name,
+              image: result.image,
+              points: 0
+            })
+          newUser.save()
+        else
+          newUser = user
+          if newUser.image != result.image
+            newUser.updateImage(result.image)
+            newUser.save()
+        users[socket.id] = newUser
         sendUsers()
     )
     socket.on('removeUser', ->
@@ -33,6 +54,7 @@ module.exports = (io) ->
     )
     socket.on('addPoints', (points) ->
       users[socket.id].addPoints(points)
+      users[socket.id].save()
       sendUsers()
     )
   )
