@@ -153,6 +153,15 @@ app.controller('mainController', function ($scope, socket, Facebook) {
         socket.emit('addPoints', 3);
     }
 
+    $scope.songs = [];
+
+    socket.on('songs', function (songs) {
+        $scope.songs = songs;
+    });
+
+    $scope.sendQuess = function(title, rightChoise){
+        socket.emit('quess', {title: title, rightChoise: rightChoise});
+    }
 
 });
 

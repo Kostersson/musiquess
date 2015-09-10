@@ -57,6 +57,9 @@ module.exports = (io) ->
       users[socket.id].save()
       sendUsers()
     )
+    socket.on('quess', (quess) ->
+      console.log(quess)
+    )
   )
 
   sendUsers = ->

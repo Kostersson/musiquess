@@ -1,3 +1,12 @@
-<button type="button" class="btn btn-primary btn-large" data-ng-show="!logged" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">Login with Facebook</button>
-<button type="button" class="btn btn-danger btn-large" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button>
-<button type="button" class="btn btn-primary btn-large" data-ng-click="addPoints()">More points</button>
+<div class="bar bar-header bar-light">
+    <h1 class="title">MusiQuess</h1>
+    <button type="button" class="btn btn-primary btn-large" data-ng-show="!logged" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">Login with Facebook</button>
+    <button type="button" class="btn btn-danger btn-large" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button>
+</div>
+
+<div ng-repeat="song in songs" style="margin-top: 50px;">
+    <button class="button button-block button-positive" ng-click="sendQuess(song.title, song.rightChoise)">
+        {{ song.title }} <br>
+        {{ song.artist[0] }} <br>
+    </button>
+</div>

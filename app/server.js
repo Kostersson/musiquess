@@ -34,9 +34,10 @@ app.factory('socket', function ($rootScope) {
     };
 });
 
-app.controller('mainController', function ($scope, socket) {
+app.controller('mainController', function ($scope, socket, ngAudio) {
     $scope.users = {};
     $scope.songs = []
+    $scope.rightSongFilename = "";
     socket.emit('getUsers');
     socket.emit('newSongs');
 
@@ -48,5 +49,16 @@ app.controller('mainController', function ($scope, socket) {
     socket.on('songs', function (songs) {
         console.log(songs);
         $scope.songs = songs;
+        findRightSong();
+        $scope.sound = ngAudio.load($scope.rightSongFilename).play();
     });
+
+    function findRightSong(){
+        $scope.songs.forEach(function(song){
+           if(song.rightChoise){
+               $scope.rightSongFilename = song.filename;
+               return;
+           }
+        });
+    }
 });
