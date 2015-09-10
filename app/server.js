@@ -36,11 +36,17 @@ app.factory('socket', function ($rootScope) {
 
 app.controller('mainController', function ($scope, socket) {
     $scope.users = {};
-
+    $scope.songs = []
     socket.emit('getUsers');
+    socket.emit('newSongs');
 
     socket.on('users', function (users) {
         console.log($scope.users);
         $scope.users = users;
+    });
+
+    socket.on('songs', function (songs) {
+        console.log(songs);
+        $scope.songs = songs;
     });
 });

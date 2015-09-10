@@ -3,3 +3,9 @@
     {{ user.points }} <br>
     <img src="{{ user.image }}" />
 </div>
+
+<div ng-repeat="song in songs">
+    {{ song.title }} <br>
+    {{ song.artist }} <br>
+    <a href="{{ song.filename }}">song</a>
+</div>

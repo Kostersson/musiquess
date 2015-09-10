@@ -4,6 +4,7 @@ http = require('http').Server(app)
 io = require('socket.io')(http)
 path = require 'path'
 mongoose = require 'mongoose'
+fs = require 'fs'
 
 app.set('port', process.env.PORT || 3000);
 
@@ -11,6 +12,7 @@ app.set('port', process.env.PORT || 3000);
 app.use '/static', express.static '../node_modules'
 app.use '/app', express.static '../app'
 app.use '/pages', express.static '../html/pages'
+app.use '/music', express.static '../music'
 
 app.get('/', (req, res) ->
     res.sendFile '/html/client.html', {'root': '../'}
@@ -28,3 +30,4 @@ db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
 
 userSocket = require('./controllers/user-controller')(io)
+music = require('./controllers/music-controller')(io)
