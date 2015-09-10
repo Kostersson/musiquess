@@ -14,6 +14,7 @@
     "angular-socket-io": "^0.7.0",
     "angular-ui-bootstrap": "^0.13.3",
     "angularjs-facebook": "git://github.com/Ciul/angular-facebook",
+    "async": "^1.4.2",
     "bootstrap": "^3.3.5",
     "coffee-script": "^1.9.3",
     "express": "^4.13.3",

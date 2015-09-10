@@ -1,6 +1,8 @@
 mm = require 'musicmetadata'
 fs = require 'fs'
 path = require 'path'
+async = require 'async'
+calls = []
 
 module.exports = (io) ->
   songs = []
@@ -8,7 +10,7 @@ module.exports = (io) ->
   selectedSongs = []
   validFileExtensions = [".mp3", ".wma"]
   amountOfChoices = 4
-
+  rightChoise = 0
   walk = (dir, done) ->
     results = []
     fs.readdir(dir, (err, list) ->
@@ -50,35 +52,41 @@ module.exports = (io) ->
 
   createRandoms = ->
     randoms = []
+
     randoms.push(Math.floor(Math.random() * songs.length)) for [1..amountOfChoices]
     console.log('randoms: ' + randoms)
     rightChoise = Math.floor(Math.random() * amountOfChoices)
     getSongsData()
-    ###
-      Dirty fix to handle async
-    ###
-    setRightSong = () ->
-      selectedSongs[rightChoise].rightChoise = true
-      sendSongs()
-    setTimeout(setRightSong, 2000)
+
+
 
 
   getSongsData = ->
     parser(songs[index]) for index in randoms
 
+    async.parallel(calls, (err, result) ->
+      if err
+        console.log(err)
+      selectedSongs[rightChoise].rightChoise = true
+      sendSongs()
+    )
+
 
   parser = (filename) ->
     selectedSongs = []
-    mm(fs.createReadStream(filename), (err, metadata) ->
-      if (err)
-        throw err
-      selectedSongs.push({
-        title: metadata.title,
-        artist: metadata.artist,
-        filename: filename
-        rightChoise: false
-      })
-  )
+    calls.push((callback) ->
+      mm(fs.createReadStream(filename), (err, metadata) ->
+        if (err)
+          throw err
+        selectedSongs.push({
+          title: metadata.title,
+          artist: metadata.artist,
+          filename: filename
+          rightChoise: false
+        })
+        callback(null, filename)
+      )
+    )
 
   sendSongs = ->
     selectedSongs.forEach( (song) ->
