@@ -1,12 +1,23 @@
-<div class="bar bar-header bar-light">
-    <h1 class="title">MusiQuess</h1>
-    <button type="button" class="btn btn-primary btn-large" data-ng-show="!logged" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">Login with Facebook</button>
-    <button type="button" class="btn btn-danger btn-large" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button>
-</div>
+<div id="example-content" class="ionic-body active-preview">
+    <div class="bar bar-header bar-stable">
+        <h1 class="title">Musiquess</h1>
+    </div>
+    <div class="content has-header padding">
 
-<div ng-repeat="song in songs" style="margin-top: 50px;">
-    <button class="button button-block button-positive" ng-click="sendQuess(song.title, song.rightChoise)">
-        {{ song.title }} <br>
-        {{ song.artist[0] }} <br>
-    </button>
+        <button ng-repeat="song in songs" class="button button-block button-positive" ng-click="sendQuess(song.title, song.rightChoise)">
+            {{ song.title }} <br>
+            {{ song.artist[0] }}
+        </button>
+
+    </div>
+    <div class="tabs tabs-icon-top">
+        <a class="tab-item" data-ng-show="!logged" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">
+            <i class="icon ion-social-facebook"></i>
+            Login with Facebook
+        </a>
+        <a class="tab-item" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">
+            <i class="icon ion-social-facebook"></i>
+            Logout
+        </a>
+    </div>
 </div>

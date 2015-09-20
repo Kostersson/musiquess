@@ -156,6 +156,7 @@ app.controller('mainController', function ($scope, socket, Facebook) {
     $scope.songs = [];
 
     socket.on('songs', function (songs) {
+        console.log(songs);
         $scope.songs = songs;
     });
 

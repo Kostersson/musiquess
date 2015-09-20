@@ -94,6 +94,7 @@ module.exports = (io) ->
       song.filename = song.filename.substring(song.filename.indexOf("/music") + 1)
     )
     running = false
+    console.log(selectedSongs)
     io.emit('songs', selectedSongs)
 
   io.on('connection', (socket) ->
