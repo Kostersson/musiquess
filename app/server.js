@@ -44,6 +44,11 @@ app.controller('mainController', function ($scope, socket, ngAudio) {
     $scope.sound = undefined;
     $scope.countdownDuration = 5;
 
+    socket.on('round-winner', function (winner) {
+        console.log(winner);
+        socket.emit('newSongs');
+    });
+
     socket.on('users', function (users) {
         console.log($scope.users);
         $scope.users = users;
