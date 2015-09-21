@@ -165,7 +165,7 @@ app.controller('mainController', function ($scope, socket, Facebook) {
 
     $scope.sendQuess = function(title, rightChoise){
         $scope.disableButtons = true;
-        socket.emit('quess', {title: title, rightChoise: rightChoise});
+        socket.emit('guess', {user: $scope.user, title: title, rightChoise: rightChoise});
     }
 
 });
