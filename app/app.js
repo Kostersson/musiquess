@@ -148,6 +148,8 @@ app.controller('mainController', function ($scope, socket, Facebook) {
         socket.emit("connectUser", $scope.user);
     }
 
+    $scope.disableButtons = false;
+
     $scope.addPoints = function(){
         console.log("points!");
         socket.emit('addPoints', 3);
@@ -157,10 +159,12 @@ app.controller('mainController', function ($scope, socket, Facebook) {
 
     socket.on('songs', function (songs) {
         console.log(songs);
+        $scope.disableButtons = false;
         $scope.songs = songs;
     });
 
     $scope.sendQuess = function(title, rightChoise){
+        $scope.disableButtons = true;
         socket.emit('quess', {title: title, rightChoise: rightChoise});
     }
 

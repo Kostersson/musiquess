@@ -4,7 +4,7 @@
     </ion-header-bar>
     <ion-content class="has-header">
 
-        <button ng-repeat="song in songs" class="button button-block button-positive" ng-click="sendQuess(song.title, song.rightChoise)">
+        <button ng-repeat="song in songs" ng-disabled="disableButtons" class="button button-block button-positive" ng-click="sendQuess(song.title, song.rightChoise)">
             {{ song.title }} <br>
             {{ song.artist[0] }}
         </button>
