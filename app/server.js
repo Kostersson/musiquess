@@ -34,7 +34,7 @@ app.factory('socket', function ($rootScope) {
     };
 });
 
-app.controller('mainController', function ($scope, socket, ngAudio) {
+app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
     $scope.users = {};
     $scope.songs = []
     $scope.rightSongFilename = "";
@@ -43,10 +43,17 @@ app.controller('mainController', function ($scope, socket, ngAudio) {
     $scope.showCountdown = false;
     $scope.sound = undefined;
     $scope.countdownDuration = 5;
+    $scope.showRoundWinner = false;
 
     socket.on('round-winner', function (winner) {
+        console.log("foo");
         console.log(winner);
-        socket.emit('newSongs');
+        $scope.winner = winner;
+        $scope.showRoundWinner = true;
+        $timeout(function() {
+            $scope.showRoundWinner = false;
+            socket.emit('newSongs');
+        }, 3000);
     });
 
     socket.on('users', function (users) {

@@ -10,3 +10,17 @@
     <a href="{{ song.filename }}">song</a>
 </div>
 <timer ng-show="showCountdown" countdown="5" interval="1000" finish-callback="startSong()">{{seconds}} second{{secondsS}}</timer>
+
+<div ng-show="showRoundWinner" class="overlay">
+    <div class="row">
+        <div class="profile-header-container">
+            <div class="profile-header-img">
+                <img class="img-circle" src="{{ winner.user.image }}" />
+                <!-- badge -->
+                <div class="rank-label-container">
+                    <span class="label label-default rank-label">Kierroksen voittaja</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

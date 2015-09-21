@@ -71,7 +71,10 @@ module.exports = (io) ->
       else if value.rightChoise is true and best.time > value.time
         best = value
         best.socketId = key
+
     if best isnt {}
+      console.log("foooooooooo")
+      console.log(best)
       users[best.socketId].addPoints(1)
       users[best.socketId].save()
     sendRoundWinner(best)
