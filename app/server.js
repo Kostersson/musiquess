@@ -1,4 +1,4 @@
-var app = angular.module('musiQuessApp', ['ngRoute', 'ngAudio']);
+var app = angular.module('musiQuessApp', ['ngRoute', 'ngAudio', 'timer']);
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -40,6 +40,9 @@ app.controller('mainController', function ($scope, socket, ngAudio) {
     $scope.rightSongFilename = "";
     socket.emit('getUsers');
     socket.emit('newSongs');
+    $scope.showCountdown = false;
+    $scope.sound = undefined;
+    $scope.countdownDuration = 5;
 
     socket.on('users', function (users) {
         console.log($scope.users);
@@ -50,7 +53,13 @@ app.controller('mainController', function ($scope, socket, ngAudio) {
         console.log(songs);
         $scope.songs = songs;
         findRightSong();
-        $scope.sound = ngAudio.load($scope.rightSongFilename).play();
+        if($scope.sound != undefined){
+            $scope.sound.stop();
+        }
+        $scope.sound = ngAudio.load($scope.rightSongFilename);
+        $scope.$broadcast('timer-set-countdown-seconds', $scope.countdownDuration);
+        $scope.$broadcast('timer-resume');
+        $scope.showCountdown = true;
     });
 
     function findRightSong(){
@@ -60,5 +69,9 @@ app.controller('mainController', function ($scope, socket, ngAudio) {
                return;
            }
         });
+    }
+    $scope.startSong = function () {
+        $scope.sound.play();
+        $scope.showCountdown = false;
     }
 });

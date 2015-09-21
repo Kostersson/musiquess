@@ -9,3 +9,4 @@
     {{ song.artist }} <br>
     <a href="{{ song.filename }}">song</a>
 </div>
+<timer ng-show="showCountdown" countdown="5" interval="1000" finish-callback="startSong()">{{seconds}} second{{secondsS}}</timer>
