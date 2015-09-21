@@ -3,6 +3,7 @@ User = require './../models/user-model'
 
 module.exports = (io) ->
   users = {}
+  guesses = {};
   io.on('connection', (socket) ->
 
     socket.on('connectUser', (result) ->
@@ -52,15 +53,33 @@ module.exports = (io) ->
     socket.on('getUsers', ->
       sendUsers()
     )
-    socket.on('addPoints', (points) ->
-      users[socket.id].addPoints(points)
-      users[socket.id].save()
-      sendUsers()
-    )
-    socket.on('guess', (quess) ->
-      console.log(quess)
+
+    socket.on('guess', (guess) ->
+      guesses[socket.id] = guess
+      guesses[socket.id].time = new Date().getTime()
+      if Object.keys(guesses).length >= Object.keys(users).length
+        calculatePoints()
     )
   )
+
+  calculatePoints = ->
+    best = {}
+    for key, value of guesses
+      if best isnt {} and value.rightChoise is true
+        best = value
+        best.socketId = key
+      else if value.rightChoise is true and best.time > value.time
+        best = value
+        best.socketId = key
+    if best isnt {}
+      users[best.socketId].addPoints(1)
+      users[best.socketId].save()
+    sendRoundWinner(best)
+
+  sendRoundWinner = (winner) ->
+    console.log(winner)
+    io.emit('users', users)
+    io.emit('round-winner', winner)
 
   sendUsers = ->
     io.emit('users', users)
