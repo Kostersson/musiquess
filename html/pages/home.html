@@ -1,16 +1,16 @@
-<div id="example-content" class="ionic-body active-preview">
-    <div class="bar bar-header bar-stable">
+
+    <ion-header-bar class="bar bar-header bar-stable">
         <h1 class="title">Musiquess</h1>
-    </div>
-    <div class="content has-header padding">
+    </ion-header-bar>
+    <ion-content class="has-header">
 
         <button ng-repeat="song in songs" class="button button-block button-positive" ng-click="sendQuess(song.title, song.rightChoise)">
             {{ song.title }} <br>
             {{ song.artist[0] }}
         </button>
 
-    </div>
-    <div class="tabs tabs-icon-top">
+    </ion-content>
+    <ion-tabs class="tabs-icon-top">
         <a class="tab-item" data-ng-show="!logged" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">
             <i class="icon ion-social-facebook"></i>
             Login with Facebook
@@ -19,5 +19,4 @@
             <i class="icon ion-social-facebook"></i>
             Logout
         </a>
-    </div>
-</div>
+    </ion-tabs>

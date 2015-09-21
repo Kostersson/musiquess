@@ -1,4 +1,4 @@
-var app = angular.module('musiQuessApp', ['ngRoute', 'btford.socket-io', 'facebook']);
+var app = angular.module('musiQuessApp', ['ngRoute', 'btford.socket-io', 'facebook', 'ionic']);
 
 app.config(function ($routeProvider) {
     $routeProvider
