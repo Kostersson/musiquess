@@ -5,6 +5,7 @@ io = require('socket.io')(http)
 path = require 'path'
 mongoose = require 'mongoose'
 fs = require 'fs'
+os = require 'os'
 
 app.set('port', process.env.PORT || 3000);
 
@@ -35,3 +36,4 @@ db.on('error', console.error.bind(console, 'connection error:'))
 
 userSocket = require('./controllers/user-controller')(io)
 music = require('./controllers/music-controller')(io)
+connection = require('./services/connection-info-service')(io,os, app.get('port'))

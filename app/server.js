@@ -36,14 +36,16 @@ app.factory('socket', function ($rootScope) {
 
 app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
     $scope.users = {};
-    $scope.songs = []
+    $scope.songs = [];
     $scope.rightSongFilename = "";
     socket.emit('getUsers');
     socket.emit('newSongs');
+    socket.emit('getAddress');
     $scope.showCountdown = false;
     $scope.sound = undefined;
     $scope.countdownDuration = 5;
     $scope.showRoundWinner = false;
+    $scope.serverAddress = "";
 
     socket.on('round-winner', function (winner) {
         console.log("foo");
@@ -60,6 +62,11 @@ app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
             $scope.showRoundWinner = false;
             socket.emit('newSongs');
         }, 3000);
+    });
+
+    socket.on('server-address', function (addr) {
+        console.log(addr);
+        $scope.serverAddress = addr;
     });
 
     socket.on('users', function (users) {
@@ -84,7 +91,6 @@ app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
         $scope.songs.forEach(function(song){
            if(song.rightChoise){
                $scope.rightSongFilename = song.filename;
-               return;
            }
         });
     }

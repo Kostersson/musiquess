@@ -1,7 +1,8 @@
 <div class="background-image"></div>
 <div class="site-wrapper">
 
-    <h1 class="title">MusiQuess</h1>
+    <h1 class="title center">MusiQuess</h1>
+    <h6 class="title center">Server address: {{ serverAddress }}</h6>
 
     <h2 class="title">Online users</h2>
 
@@ -27,17 +28,16 @@
         </button>
     </div>
 
+</div>
 
-
-    <div ng-show="showRoundWinner" class="overlay display-table">
-        <div class="row display-table-cell vertical-align-middle">
-            <div class="profile-header-container">
-                <div class="profile-header-img">
-                    <img class="img-circle" src="{{ winner.user.image }}" />
-                    <!-- badge -->
-                    <div class="rank-label-container">
-                        <span class="label label-default rank-label">{{ winnerText }}</span>
-                    </div>
+<div ng-show="showRoundWinner" class="overlay display-table">
+    <div class="row display-table-cell vertical-align-middle">
+        <div class="profile-header-container">
+            <div class="profile-header-img">
+                <img class="img-circle" src="{{ winner.user.image }}" />
+                <!-- badge -->
+                <div class="rank-label-container">
+                    <span class="label label-default rank-label">{{ winnerText }}</span>
                 </div>
             </div>
         </div>
