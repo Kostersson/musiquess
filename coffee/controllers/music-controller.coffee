@@ -12,6 +12,9 @@ module.exports = (io) ->
   amountOfChoices = 4
   rightChoise = 0
   running = false
+  runtimeError = false
+
+
   walk = (dir, done) ->
     results = []
     fs.readdir(dir, (err, list) ->
@@ -57,6 +60,9 @@ module.exports = (io) ->
     console.log('randoms: ' + randoms)
     rightChoise = Math.floor(Math.random() * amountOfChoices)
     getSongsData()
+    if runtimeError
+      runtimeError = false
+      createRandoms()
 
 
 
@@ -67,8 +73,10 @@ module.exports = (io) ->
     async.parallel(calls, (err, result) ->
       if err
         console.log(err)
-      selectedSongs[rightChoise].rightChoise = true
-      sendSongs()
+        runtimeError = true
+      else
+        selectedSongs[rightChoise].rightChoise = true
+        sendSongs()
     )
 
 
@@ -77,7 +85,7 @@ module.exports = (io) ->
       mm(fs.createReadStream(filename), (err, metadata) ->
         if (err)
           console.log(err)
-          createRandoms()
+          runtimeError = true
         selectedSongs.push({
           title: metadata.title,
           artist: metadata.artist,

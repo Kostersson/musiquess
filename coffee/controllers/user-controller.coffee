@@ -72,7 +72,7 @@ module.exports = (io) ->
         best = value
         best.socketId = key
 
-    if Object.keys(best).length isnt 0
+    if Object.keys(best).length isnt 0 and users[best.socketId] isnt undefined
       users[best.socketId].addPoints(1)
       users[best.socketId].save()
     sendRoundWinner(best)

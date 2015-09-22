@@ -1,4 +1,4 @@
-var app = angular.module('musiQuessApp', ['ngRoute', 'ngAudio', 'timer']);
+var app = angular.module('musiQuessApp', ['ngRoute', 'ngAudio', 'timer', 'angular-toArrayFilter']);
 
 app.config(function ($routeProvider) {
     $routeProvider

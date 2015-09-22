@@ -1,25 +1,43 @@
-<div ng-repeat="(id, user) in users">
-    {{ user.name }} <br>
-    {{ user.points }} <br>
-    <img src="{{ user.image }}" />
-</div>
-{{ rightSongFilename }}
-<div ng-repeat="song in songs">
-    {{ song.title }} <br>
-    {{ song.artist }} <br>
-    <a href="{{ song.filename }}">song</a>
-</div>
-<timer ng-show="showCountdown" countdown="5" interval="1000" finish-callback="startSong()">{{seconds}} second{{secondsS}}</timer>
+<div class="background-image"></div>
+<div class="site-wrapper">
 
+    <h1 class="title">MusiQuess</h1>
 
-<div ng-show="showRoundWinner" class="overlay display-table">
-    <div class="row display-table-cell vertical-align-middle">
-        <div class="profile-header-container">
+    <h2 class="title">Online users</h2>
+
+    <div class="row">
+        <div class="profile-header-container col-md-3" ng-repeat="(id, user) in users | toArray | orderBy : 'user.points'">
             <div class="profile-header-img">
-                <img class="img-circle" src="{{ winner.user.image }}" />
+                <img class="img-circle" src="{{ user.image }}" />
                 <!-- badge -->
-                <div class="rank-label-container">
-                    <span class="label label-default rank-label">{{ winnerText }}</span>
+                <div class="rank-label-container fixed-width-200">
+                    <span class="label label-default rank-label">{{ user.name }}</span> <br />
+                    <span class="label label-default rank-label">Points: {{ user.points }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h3>&nbsp;<span ng-show="showCountdown">Next song in: <timer countdown="5" interval="1000" finish-callback="startSong()">{{seconds}} second{{secondsS}}</timer></span></h3>
+    <h2 class="title">Songs</h2>
+
+    <div class="col-md-6" ng-repeat="song in songs">
+        <button type="button" class="btn btn-song col-md-12">
+            {{ song.title }} <br>
+            {{ song.artist[0] }}
+        </button>
+    </div>
+
+
+
+    <div ng-show="showRoundWinner" class="overlay display-table">
+        <div class="row display-table-cell vertical-align-middle">
+            <div class="profile-header-container">
+                <div class="profile-header-img">
+                    <img class="img-circle" src="{{ winner.user.image }}" />
+                    <!-- badge -->
+                    <div class="rank-label-container">
+                        <span class="label label-default rank-label">{{ winnerText }}</span>
+                    </div>
                 </div>
             </div>
         </div>

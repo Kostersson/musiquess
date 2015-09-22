@@ -1,56 +1,54 @@
+@import url(https://fonts.googleapis.com/css?family=Graduate&subset=latin,latin-ext);
 
-/**
- * Profile image component
- */
-.profile-header-container{
-    margin: 0 auto;
-    text-align: center;
-}
-
-.profile-header-img {
-    padding: 54px;
-}
-
-.profile-header-img > img.img-circle {
-    width: 200px;
-    height: 200px;
-    border: 2px solid #51D2B7;
-}
-
-.profile-header {
-    margin-top: 43px;
-}
-
-/**
- * Ranking component
- */
-.rank-label-container {
-    margin-top: -19px;
-    /* z-index: 1000; */
-    text-align: center;
-}
-
-.label.label-default.rank-label {
-    background-color: rgb(81, 210, 183);
-    padding: 5px 10px 5px 10px;
-    border-radius: 27px;
-}
-.overlay {
-    position: absolute;
-    z-index: 1;
-    background: rgba(0,0,0,0.5);
-    top: 0;
-    bottom: 0;
-    width: 100%;
+html,
+body {
     height: 100%;
 }
+body {
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,.5);
+    background: transparent;
+}
+h1 {
+    text-align: center;
+}
 
-.display-table {
-    display: table;
+* {
+    box-sizing: border-box;
 }
-.display-table-cell {
-    display: table-cell;
+
+.background-image {
+    background: #333 url('/images/black-and-white-music-headphones-life.jpg');
+    background-size: cover;
+    display: block;
+    filter: blur(2px);
+    -webkit-filter: blur(5px);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: 1;
 }
-.vertical-align-middle{
-    vertical-align: middle;
+
+
+.title {
+    font-family: 'Graduate', cursive;
+}
+.btn-song {
+    background: #444444;
+    font-family: 'Graduate', cursive;
+    margin-bottom: 10px;
+}
+.site-wrapper {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 3px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    top: 10px;
+    left: 0;
+    position: fixed;
+    margin-left: 20px;
+    margin-right: 20px;
+    right: 0;
+    z-index: 2;
+    padding: 0 10px;
 }

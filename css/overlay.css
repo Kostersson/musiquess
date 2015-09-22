@@ -1,0 +1,56 @@
+
+/**
+ * Profile image component
+ */
+.profile-header-container{
+    margin: 0 auto;
+    text-align: center;
+}
+
+.profile-header-img {
+    padding: 10px;
+}
+
+.profile-header-img > img.img-circle {
+    width: 200px;
+    height: 200px;
+    border: 2px solid #686868;
+}
+
+.profile-header {
+    margin-top: 43px;
+}
+
+/**
+ * Ranking component
+ */
+.rank-label-container {
+    margin-top: -19px;
+    /* z-index: 1000; */
+    text-align: center;
+}
+
+.label.label-default.rank-label {
+    background-color: #686868;
+    padding: 5px 10px 5px 10px;
+    border-radius: 27px;
+}
+.overlay {
+    position: absolute;
+    z-index: 1;
+    background: rgba(0,0,0,0.5);
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.display-table {
+    display: table;
+}
+.display-table-cell {
+    display: table-cell;
+}
+.vertical-align-middle{
+    vertical-align: middle;
+}
