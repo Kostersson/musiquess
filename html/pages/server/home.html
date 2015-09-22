@@ -11,14 +11,15 @@
 </div>
 <timer ng-show="showCountdown" countdown="5" interval="1000" finish-callback="startSong()">{{seconds}} second{{secondsS}}</timer>
 
-<div ng-show="showRoundWinner" class="overlay">
-    <div class="row">
+
+<div ng-show="showRoundWinner" class="overlay display-table">
+    <div class="row display-table-cell vertical-align-middle">
         <div class="profile-header-container">
             <div class="profile-header-img">
                 <img class="img-circle" src="{{ winner.user.image }}" />
                 <!-- badge -->
                 <div class="rank-label-container">
-                    <span class="label label-default rank-label">Kierroksen voittaja</span>
+                    <span class="label label-default rank-label">{{ winnerText }}</span>
                 </div>
             </div>
         </div>

@@ -16,7 +16,6 @@ app.use '/music', express.static '../music'
 app.use '/ionic', express.static '../ionic'
 app.use '/css', express.static '../css'
 
-
 app.get('/', (req, res) ->
     res.sendFile '/html/client.html', {'root': '../'}
 )

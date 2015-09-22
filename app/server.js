@@ -50,6 +50,12 @@ app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
         console.log(winner);
         $scope.winner = winner;
         $scope.showRoundWinner = true;
+        if(winner.user != undefined){
+            $scope.winnerText = "Round winner: " + winner.user.name;
+        }
+        else {
+            $scope.winnerText = "No right answers"
+        }
         $timeout(function() {
             $scope.showRoundWinner = false;
             socket.emit('newSongs');
