@@ -6,7 +6,7 @@
 
         <button ng-repeat="song in songs" ng-disabled="disableButtons" class="button button-block button-positive" ng-click="sendQuess(song.title, song.rightChoise)">
             {{ song.title }} <br>
-            {{ song.artist[0] }}
+            {{ song.artist }}
         </button>
 
     </ion-content>

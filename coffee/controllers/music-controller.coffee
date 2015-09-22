@@ -1,7 +1,8 @@
-mm = require 'musicmetadata'
+id3 = require 'id3js'
 fs = require 'fs'
 path = require 'path'
 async = require 'async'
+
 calls = []
 
 module.exports = (io) ->
@@ -82,13 +83,13 @@ module.exports = (io) ->
 
   parser = (filename) ->
     calls.push((callback) ->
-      mm(fs.createReadStream(filename), (err, metadata) ->
+      id3({file: filename, type: id3.OPEN_LOCAL}, (err, tags) ->
         if (err)
           console.log(err)
           runtimeError = true
         selectedSongs.push({
-          title: metadata.title,
-          artist: metadata.artist,
+          title: tags.title,
+          artist: tags.artist,
           filename: filename
           rightChoise: false
         })

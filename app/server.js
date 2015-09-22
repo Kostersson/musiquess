@@ -97,7 +97,9 @@ app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
         });
     }
     $scope.startSong = function () {
-        $scope.sound.play();
+        if($scope.sound != undefined){
+            $scope.sound.play();
+        }
         $scope.showCountdown = false;
     }
 });
