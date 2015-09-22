@@ -10,7 +10,11 @@ app.config(function ($routeProvider) {
 
 }).config(function(FacebookProvider) {
     FacebookProvider.init('918570134876487');
-})
+
+}).config(function($ionicConfigProvider) {
+    $ionicConfigProvider.tabs.position("bottom");
+    $ionicConfigProvider.tabs.style("standard");
+});
 
 app.factory('socket', function ($rootScope) {
     var socket = io.connect();
@@ -146,6 +150,10 @@ app.controller('mainController', function ($scope, socket, Facebook) {
 
     function emitUser(){
         socket.emit("connectUser", $scope.user);
+    }
+
+    $scope.emitSongsRefresh = function(){
+        socket.emit("newSongs")
     }
 
     $scope.disableButtons = false;

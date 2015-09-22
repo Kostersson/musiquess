@@ -81,10 +81,12 @@ app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
         if($scope.sound != undefined){
             $scope.sound.stop();
         }
-        $scope.sound = ngAudio.load($scope.rightSongFilename);
-        $scope.$broadcast('timer-set-countdown-seconds', $scope.countdownDuration);
-        $scope.$broadcast('timer-resume');
-        $scope.showCountdown = true;
+        if(Object.keys(users).length > 0){
+            $scope.sound = ngAudio.load($scope.rightSongFilename);
+            $scope.$broadcast('timer-set-countdown-seconds', $scope.countdownDuration);
+            $scope.$broadcast('timer-resume');
+            $scope.showCountdown = true;
+        }
     });
 
     function findRightSong(){
