@@ -47,6 +47,9 @@ app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
     $scope.showRoundWinner = false;
     $scope.serverAddress = "";
 
+    var songReady = false;
+    var songStarted = false;
+
     socket.on('round-winner', function (winner) {
         console.log("winner");
         console.log(winner);
@@ -76,6 +79,9 @@ app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
         console.log("users");
         console.log($scope.users);
         $scope.users = users;
+        if(songReady && !songStarted){
+            startCounter();
+        }
     });
 
     socket.on('songs', function (songs) {
@@ -83,16 +89,22 @@ app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
         console.log(songs);
         $scope.songs = songs;
         findRightSong();
-        if($scope.sound != undefined){
+        if($scope.sound != undefined) {
             $scope.sound.stop();
         }
-
         $scope.sound = ngAudio.load($scope.rightSongFilename);
+        songReady = true;
+        if(Object.keys($scope.users).length > 0){
+            startCounter();
+        }
+    });
+
+    function startCounter(){
+        songStarted = true;
         $scope.$broadcast('timer-set-countdown-seconds', $scope.countdownDuration);
         $scope.$broadcast('timer-resume');
         $scope.showCountdown = true;
-
-    });
+    }
 
     function findRightSong(){
         $scope.songs.forEach(function(song){
