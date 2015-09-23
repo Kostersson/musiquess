@@ -36,4 +36,4 @@ db.on('error', console.error.bind(console, 'connection error:'))
 
 userSocket = require('./controllers/user-controller')(io)
 music = require('./controllers/music-controller')(io)
-connection = require('./services/connection-info-service')(io,os, app.get('port'))
+connection = require('./controllers/connection-info-controller')(io,os, app.get('port'))
