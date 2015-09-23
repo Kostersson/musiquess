@@ -4,7 +4,7 @@
     <h1 class="title center">MusiQuess</h1>
     <h6 class="title center">Server address: {{ serverAddress }}</h6>
 
-    <h2 class="title">Online users</h2>
+    <h2 class="title">Players online</h2>
 
     <div class="row">
         <div class="profile-header-container col-md-3" ng-repeat="(id, user) in users | toArray | orderBy : 'user.points'">
