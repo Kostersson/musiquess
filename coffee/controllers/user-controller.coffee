@@ -64,6 +64,7 @@ module.exports = (io) ->
 
   calculatePoints = ->
     best = {}
+    console.log(best)
     for key, value of guesses
       if Object.keys(best).length is 0 and value.rightChoise is true
         best = value
@@ -75,6 +76,7 @@ module.exports = (io) ->
     if Object.keys(best).length isnt 0 and users[best.socketId] isnt undefined
       users[best.socketId].addPoints(1)
       users[best.socketId].save()
+    guesses = {}
     sendRoundWinner(best)
 
   sendRoundWinner = (winner) ->

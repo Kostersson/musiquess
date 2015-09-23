@@ -48,15 +48,17 @@ app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
     $scope.serverAddress = "";
 
     socket.on('round-winner', function (winner) {
-        console.log("foo");
+        console.log("winner");
         console.log(winner);
         $scope.winner = winner;
         $scope.showRoundWinner = true;
         if(winner.user != undefined){
             $scope.winnerText = "Round winner: " + winner.user.name;
+            $scope.winnerImage = winner.user.image;
         }
         else {
-            $scope.winnerText = "No right answers"
+            $scope.winnerImage = "/images/deal_with_it.png";
+            $scope.winnerText = "No right answers";
         }
         $timeout(function() {
             $scope.showRoundWinner = false;
@@ -65,28 +67,31 @@ app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
     });
 
     socket.on('server-address', function (addr) {
+        console.log("server address");
         console.log(addr);
         $scope.serverAddress = addr;
     });
 
     socket.on('users', function (users) {
+        console.log("users");
         console.log($scope.users);
         $scope.users = users;
     });
 
     socket.on('songs', function (songs) {
+        console.log("songs");
         console.log(songs);
         $scope.songs = songs;
         findRightSong();
         if($scope.sound != undefined){
             $scope.sound.stop();
         }
-        if(Object.keys(users).length > 0){
-            $scope.sound = ngAudio.load($scope.rightSongFilename);
-            $scope.$broadcast('timer-set-countdown-seconds', $scope.countdownDuration);
-            $scope.$broadcast('timer-resume');
-            $scope.showCountdown = true;
-        }
+
+        $scope.sound = ngAudio.load($scope.rightSongFilename);
+        $scope.$broadcast('timer-set-countdown-seconds', $scope.countdownDuration);
+        $scope.$broadcast('timer-resume');
+        $scope.showCountdown = true;
+
     });
 
     function findRightSong(){
@@ -97,9 +102,7 @@ app.controller('mainController', function ($scope, $timeout, socket, ngAudio) {
         });
     }
     $scope.startSong = function () {
-        if($scope.sound != undefined){
-            $scope.sound.play();
-        }
+        $scope.sound.play();
         $scope.showCountdown = false;
     }
 });
